@@ -5,7 +5,6 @@ from .models import UniversityModel, SponsorModel, StudentModel, StudentBudgetMo
 
 
 class SponsorCreateSerializer(serializers.ModelSerializer):
-
     condition = serializers.HiddenField(default=1)
 
     class Meta:
@@ -13,11 +12,19 @@ class SponsorCreateSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        print(validated_data.get('person'), validated_data.get('name_company')=='')
+        print(validated_data.get('person'), validated_data.get('name_company') == '')
         if (validated_data.get('person') == 0 and validated_data.get('name_company') == '') or (
                 validated_data.get('person') == 1 and validated_data.get('name_company') != ''):
             raise ValidationError("Yuridik shaxsning firma nomi bo'lishi shart")
         return SponsorModel.objects.create(**validated_data)
+
+
+class SponsorDetailSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SponsorModel
+        fields = '__all__'
+        read_only_fields = ['full_name', 'person', 'phone_number', 'name_company', 'budget']
 
 
 class StudentSerializer(serializers.ModelSerializer):

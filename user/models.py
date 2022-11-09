@@ -92,5 +92,3 @@ class StudentBudgetModel(BaseModel):
     class Meta:
         verbose_name = 'Talaba va Homiy'
         verbose_name_plural = 'Talabalar va Homiylar'
-
-
