@@ -29,8 +29,8 @@ class UniversityModel(BaseModel):
 
 # Sponsor
 PERSON = [
-    (1, 'Yuridik'),
-    (2, 'Jismoniy'),
+    (0, 'Yuridik'),
+    (1, 'Jismoniy'),
 ]
 
 CONDITIONS = [
@@ -42,7 +42,7 @@ CONDITIONS = [
 
 
 class SponsorModel(BaseModel):
-    person = models.IntegerField('shaxs turi', choices=PERSON)
+    person = models.BooleanField('shaxs turi', choices=PERSON)
     full_name = models.CharField('F.I.Sh', max_length=255)
     phone_number = models.CharField('telefon raqam', max_length=255)
     name_company = models.CharField('Firma nomi', max_length=255, blank=True, null=True)
