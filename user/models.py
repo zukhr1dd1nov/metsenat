@@ -7,6 +7,8 @@ from django.core.exceptions import ValidationError
 from django.db.models.signals import pre_save, post_save
 from rest_framework.exceptions import ValidationError
 
+from user.validators import min_contribution
+
 
 class BaseModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -42,12 +44,12 @@ CONDITIONS = [
 
 
 class SponsorModel(BaseModel):
-    person = models.BooleanField('shaxs turi', choices=PERSON)
+    person = models.BooleanField('Shaxs turi', choices=PERSON)
     full_name = models.CharField('F.I.Sh', max_length=255)
-    phone_number = models.CharField('telefon raqam', max_length=255)
+    phone_number = models.CharField('telefon raqam', max_length=9)
     name_company = models.CharField('Firma nomi', max_length=255, blank=True, null=True)
     condition = models.IntegerField('Holat', choices=CONDITIONS, default=1)
-    budget = models.PositiveIntegerField(default=0)
+    budget = models.PositiveIntegerField()
 
     def __str__(self):
         return self.full_name
@@ -67,8 +69,8 @@ TYPE = [
 
 class StudentModel(BaseModel):
     full_name = models.CharField("F.I.SH", max_length=255)
-    phone = models.CharField('telefon raqam', max_length=255)
-    university = models.ForeignKey(UniversityModel, verbose_name='Institut', on_delete=models.CASCADE)
+    phone_number = models.CharField('telefon raqam', max_length=9)
+    university = models.ForeignKey(UniversityModel, verbose_name='Institut', on_delete=models.RESTRICT)
     student_type = models.IntegerField('Talim turi', choices=TYPE)
     request = models.PositiveIntegerField('Soralgan pul miqdori')
     send = models.PositiveIntegerField('Tolangan pul miqdori')
@@ -82,8 +84,8 @@ class StudentModel(BaseModel):
 
 
 class StudentBudgetModel(BaseModel):
-    student = models.ForeignKey(StudentModel, on_delete=models.CASCADE, verbose_name='Talaba')
-    sponsor = models.ForeignKey(SponsorModel, on_delete=models.CASCADE, verbose_name='Homiy')
+    student = models.ForeignKey(StudentModel, on_delete=models.RESTRICT, verbose_name='Talaba')
+    sponsor = models.ForeignKey(SponsorModel, on_delete=models.RESTRICT, verbose_name='Homiy')
     money = models.PositiveIntegerField(verbose_name='Pull miqdori')
 
     def __str__(self):
