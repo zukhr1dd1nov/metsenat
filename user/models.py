@@ -46,7 +46,7 @@ class SponsorModel(BaseModel):
     full_name = models.CharField('F.I.Sh', max_length=255)
     phone_number = models.CharField('telefon raqam', max_length=255)
     name_company = models.CharField('Firma nomi', max_length=255, blank=True, null=True)
-    condition = models.IntegerField('Holat', choices=CONDITIONS)
+    condition = models.IntegerField('Holat', choices=CONDITIONS, default=1)
     budget = models.PositiveIntegerField(default=0)
 
     def __str__(self):
