@@ -29,6 +29,12 @@ class SponsorCreateSerializer(serializers.ModelSerializer):
                 raise ValidationError(errors)
         return SponsorModel.objects.create(**validated_data)
 
+class SponsorSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SponsorModel
+        fields = '__all__'
+
 
 class StudentSerializer(serializers.ModelSerializer):
     class Meta:
