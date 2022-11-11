@@ -1,7 +1,12 @@
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
-
 from .models import UniversityModel, SponsorModel, StudentModel, StudentBudgetModel
+
+
+class SponsorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SponsorModel
+        exclude = ['updated_at']
 
 
 class SponsorCreateSerializer(serializers.ModelSerializer):
@@ -12,7 +17,6 @@ class SponsorCreateSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        print(validated_data.get('person'), validated_data.get('name_company') == '')
         if (validated_data.get('person') == 0 and validated_data.get('name_company') == '') or (
                 validated_data.get('person') == 1 and validated_data.get('name_company') != ''):
             raise ValidationError("Yuridik shaxsning firma nomi bo'lishi shart")
@@ -20,26 +24,33 @@ class SponsorCreateSerializer(serializers.ModelSerializer):
 
 
 class SponsorDetailSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = SponsorModel
         fields = '__all__'
         read_only_fields = ['full_name', 'person', 'phone_number', 'name_company', 'budget']
 
 
-class StudentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = StudentModel
-        fields = '__all__'
-
-
 class UniversitySerializer(serializers.ModelSerializer):
     class Meta:
         model = UniversityModel
-        fields = '__all__'
+        fields = ['university_name']
+
+
+class StudentSerializer(serializers.ModelSerializer):
+    # university = University3Serializer()
+
+    class Meta:
+        model = StudentModel
+        exclude = ['created_at', 'updated_at']
 
 
 class StudentBudgetSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentBudgetModel
+        fields = '__all__'
+
+
+class StudentDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentModel
         fields = '__all__'
