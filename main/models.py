@@ -35,20 +35,21 @@ PERSON = [
 
 CONDITIONS = [
     (1, 'Yangi'),
-    (2, 'Tasdiqlanmagan'),
+    (2, 'Tasdiqlangan'),
     (3, 'Moderatsiyada'),
     (4, 'Bekor qilingan'),
 ]
 
 
 class Sponsor(BaseModel):
-    person = models.BooleanField('Shaxs turi', choices=PERSON)
+    is_phisical_person = models.BooleanField('Shaxs turi', choices=PERSON)
     full_name = models.CharField('F.I.Sh', max_length=255)
     phone = models.CharField('telefon raqam', max_length=9)
     name_company = models.CharField('Firma nomi', max_length=255, blank=True, null=True)
     condition = models.IntegerField('Holat', choices=CONDITIONS, default=1)
     budget = models.PositiveIntegerField()
     used = models.PositiveIntegerField(default=0)
+    is_counted = models.BooleanField(default=False)
 
     @property
     def remaining_budget(self):
@@ -71,7 +72,7 @@ TYPE = [
 
 class Student(BaseModel):
     full_name = models.CharField("F.I.SH", max_length=255)
-    phone_number = models.CharField('telefon raqam', max_length=9)
+    phone = models.CharField('telefon raqam', max_length=9)
     university = models.ForeignKey(University, verbose_name='Institut', on_delete=models.RESTRICT)
     student_type = models.IntegerField('Talim turi', choices=TYPE)
     request = models.PositiveIntegerField('Soralgan pul miqdori')
@@ -100,3 +101,28 @@ class StudentBudget(BaseModel):
     class Meta:
         verbose_name = 'Talaba va Homiy'
         verbose_name_plural = 'Talabalar va Homiylar'
+
+
+class LinearGraph(models.Model):
+    number_sp = models.PositiveIntegerField(default=0)
+    number_st = models.PositiveIntegerField(default=0)
+    day = models.DateTimeField()
+
+    def __str__(self):
+        return self.day
+
+    class Meta:
+        verbose_name = 'Kunlik Statistika'
+        verbose_name_plural = 'Kunlar Statistikasi'
+
+class MainDatas(models.Model):
+    money_asked = models.PositiveIntegerField(default=0)
+    money_sent = models.PositiveIntegerField(default=0)
+    money_amount = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"So'raldi:  {self.money_asked} Berildi:  {self.money_sent}  Bor:  {self.money_amount}"
+
+    class Meta:
+        verbose_name = 'Asosiy Malumotlar'
+        verbose_name_plural = 'Asosiy Malumotlar'

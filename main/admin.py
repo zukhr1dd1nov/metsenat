@@ -1,11 +1,11 @@
 from django.contrib import admin
-from main.models import Sponsor, Student, StudentBudget, University
+from main.models import Sponsor, Student, StudentBudget, University, LinearGraph, MainDatas
 
 
 @admin.register(Sponsor)
 class SponsorAdmin(admin.ModelAdmin):
-    list_display = ['person', 'full_name', 'phone', 'budget']
-    list_display_links = ['person', 'full_name', 'phone', 'budget']
+    list_display = ['is_phisical_person', 'full_name', 'phone', 'budget']
+    list_display_links = ['is_phisical_person', 'full_name', 'phone', 'budget']
 
 
 @admin.register(Student)
@@ -26,3 +26,12 @@ class UniversityAdmin(admin.ModelAdmin):
 class StudentBudgetAdmin(admin.ModelAdmin):
     list_display = ['student', 'sponsor', 'money',]
     list_display_links = ['student', 'sponsor', 'money']
+
+
+@admin.register(LinearGraph)
+class LinearGraphAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(MainDatas)
+class MainDatasAdmin(admin.ModelAdmin):
+    pass

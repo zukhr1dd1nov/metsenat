@@ -9,6 +9,9 @@ from rest_framework.permissions import IsAdminUser, AllowAny
 
 class MainListView(APIView):
     def get(self, request):
+        qs = LinearGraph.objects.all().order_by('-id')
+        serializer_linear_graph = LinearGraphSerializer(qs, many=True)
+
         qs = Sponsor.objects.all()
         if self.request.query_params:
             params=self.request.query_params
@@ -29,7 +32,8 @@ class MainListView(APIView):
 
         return Response({
             'sponsors': serializer_sponsor.data,
-            'students': serializer_student.data
+            'students': serializer_student.data,
+            'graph': serializer_linear_graph.data,
         }, status=status.HTTP_200_OK)
 
     def post(self, request, *args, **kwargs):
@@ -48,7 +52,7 @@ class SponsorCreateView(generics.CreateAPIView):
 
 class SponsorDetailView(generics.RetrieveUpdateAPIView):
     queryset = Sponsor
-    serializer_class = SponsorDetailSerializer
+    serializer_class = SponsorSerializer
 
 
 class StudentDetailView(APIView):
