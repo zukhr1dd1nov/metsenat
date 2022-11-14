@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render
 from rest_framework import viewsets, generics, status
 from rest_framework.response import Response
@@ -14,17 +15,19 @@ class MainListView(APIView):
 
         qs = Sponsor.objects.all()
         if self.request.query_params:
-            params=self.request.query_params
+            params = self.request.query_params
+            global qs
+            qs = Sponsor.objects.all()
             if params['sp-flnm']:
-                qs.filter(full_name__icontains=params['sp-flnm'])
+                qs = Sponsor.objects.filter(full_name__icontains=self.request.query_params['qflnm'])
             if params['sp-cond']:
                 qs.filter(condition=params['sp-cond'])
             if params['sp-b']:
-                qs.filter(budget=params['sp-b'])
+                qs.filter(budget=int(params['sp-b']))
             if params['sp-bg']:
-                qs.filter(budget__gte=params['sp-bg'])
+                qs.filter(budget__gte=int(params['sp-bg']))
             if params['sp-be']:
-                qs.filter(budget__lte=params['sp-bg'])
+                qs.filter(budget__lte=int(params['sp-be']))
         serializer_sponsor = SponsorSerializer(qs, many=True)
 
         qs = Student.objects.all()
@@ -79,7 +82,6 @@ class StudentDetailView(APIView):
         request.data['student'] = pk
         serializer = StudentBudgetSerializer(data=request.data)
         if serializer.is_valid():
-            print(serializer.validated_data)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

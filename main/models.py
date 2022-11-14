@@ -106,10 +106,10 @@ class StudentBudget(BaseModel):
 class LinearGraph(models.Model):
     number_sp = models.PositiveIntegerField(default=0)
     number_st = models.PositiveIntegerField(default=0)
-    day = models.DateTimeField()
+    day = models.DateField()
 
     def __str__(self):
-        return self.day
+        return f'{self.day}'
 
     class Meta:
         verbose_name = 'Kunlik Statistika'

@@ -75,8 +75,7 @@ class StudentBudgetSerializer(serializers.ModelSerializer):
         if sponsor.remaining_budget < money:
             errors['sponsor'] = f"Homiyning puli yetarlicha emas. Homiyda faqatgina {sponsor.remaining_budget} qoldi"
         if student.remaining_request < money:
-            errors[
-                'student'] = f"Student soralgan puldan ko'proq bo'lishi mumkin emas. Studentga faqatgina {student.remaining_request} kerak"
+            errors['student'] = f"Student soralgan puldan ko'proq bo'lishi mumkin emas. Studentga faqatgina {student.remaining_request} kerak"
         if errors:
             raise ValidationError(errors)
         money_management(sponsor, student, money)

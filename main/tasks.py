@@ -5,9 +5,9 @@ import datetime
 
 @app.task
 def create_data_graph():
-    yesterday = datetime.datetime.today() - datetime.timedelta(days=1)
-    number_sp = Sponsor.objects.filter(created_at=yesterday).count()
-    number_st = Student.objects.filter(created_at=yesterday).count()
+    yesterday = datetime.date.today()
+    number_sp = Sponsor.objects.filter(created_at__month=yesterday.month, created_at__day=yesterday.day, created_at__year=yesterday.year).count()
+    number_st = Student.objects.filter(created_at__month=yesterday.month, created_at__day=yesterday.day, created_at__year=yesterday.year).count()
     LinearGraph.objects.create(day=yesterday, number_st=number_st, number_sp=number_sp)
 
 
